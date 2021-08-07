@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab-aks-service
+  labels:
+    app: lab-aks-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lab-aks-service
+  template:
+    metadata:
+      labels:
+        app: lab-aks-service
+    spec:
+      containers:
+      - name: lab-aks-service
+        resources:
+          limits:
+            memory: "250Mi"
+            cpu: "250m"
+          requests:
+            memory: "50Mi"
+        image: 445777485023.dkr.ecr.sa-east-1.amazonaws.com/countries-service
+        imagePullPolicy: "Always"
+        ports:
+        - name: web
+          containerPort: 80
+      imagePullSecrets:
+      - name: regcred
+      #nodeSelector:
+        #node-env: staging
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lab-aks-service-lb
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      #targetPort: 8080
+  selector:
+    app: lab-aks-service
+  type: LoadBalancer
