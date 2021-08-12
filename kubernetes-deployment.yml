@@ -22,13 +22,13 @@ spec:
             cpu: "250m"
           requests:
             memory: "50Mi"
-        image: 445777485023.dkr.ecr.sa-east-1.amazonaws.com/countries-service
+        image: labsnextregistry.azurecr.io/microservices/labs_aks:v1
         imagePullPolicy: "Always"
         ports:
         - name: web
           containerPort: 80
       imagePullSecrets:
-      - name: regcred
+      - name: labsnextregistry.secret
       #nodeSelector:
         #node-env: staging
 ---
